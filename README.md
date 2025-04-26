@@ -24,7 +24,7 @@ Paste this into Terminal:
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/WilCF/VPNBarBuddy/main/install.sh)
-```
+```bash
 
     Follow the prompts.
 
