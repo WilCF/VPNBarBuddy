@@ -20,4 +20,4 @@ Now with automatic DNS leak detection and macOS notifications!
 Paste this into Terminal:
 
 ```bash
-bash <(curl -s https://WilCF.github.io/VPNBarBuddy/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/WilCF/VPNBarBuddy/main/install.sh)
