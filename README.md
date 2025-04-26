@@ -1,21 +1,17 @@
-# VPNBarBuddy: Your VPN Status and Connection Buddy for macOS
-Built by WilCF
+# VPNBarBuddy
 
-🎛️ **VPNBarBuddy** is a tiny, super-clean tool that:
-- Lets you connect to any of your WireGuard VPN profiles right from the Mac menu bar
-- Shows your VPN status live (🟢 Connected / 🔴 Not Connected)
-- Pops macOS notifications when you connect or disconnect
-- Prevents DNS leaks automatically
+🎛️ VPNBarBuddy lets you connect and monitor Mullvad WireGuard VPNs right from your macOS menu bar.  
+Now with automatic DNS leak detection and macOS notifications!
 
 ---
 
 ## ✨ Features
 
-- **Multi-profile support**: Choose from all your WireGuard `.conf` files
-- **No DNS leaks**: Forces secure DNS on VPN connect
-- **Instant notifications**: macOS alerts for connection changes
-- **Lightweight & private**: No tracking, no background apps
-- **Fun Setup Experience**: Progress bars, clear instructions
+- Connect/Disconnect any WireGuard VPN
+- Live status in Mac menu bar (🟢 Connected, 🔴 Disconnected)
+- **Auto DNS Leak Detection**
+- macOS notifications when VPN connects/disconnects
+- Very lightweight, privacy-respecting
 
 ---
 
@@ -24,17 +20,4 @@ Built by WilCF
 Paste this into Terminal:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/WilCF/VPNBarBuddy/main/install.sh)
-```
-
-    Follow the prompts.
-
-    Open xbar and set plugin folder to ~/vpnbarbuddy-plugins (or wherever you chose).
-
-🎯 Requirements
-
-    macOS Catalina or newer
-
-    WireGuard tools (brew install wireguard-tools)
-
-    xbar (BitBar successor) (optional auto-install during setup)
+bash <(curl -s https://WilCF.github.io/VPNBarBuddy/install.sh)
