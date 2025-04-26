@@ -1,4 +1,5 @@
 # VPNBarBuddy: Your VPN Status and Connection Buddy for macOS
+Built by WilCF
 
 🎛️ **VPNBarBuddy** is a tiny, super-clean tool that:
 - Lets you connect to any of your WireGuard VPN profiles right from the Mac menu bar
