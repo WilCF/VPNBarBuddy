@@ -23,9 +23,8 @@
 Paste this into Terminal:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/YOURUSERNAME/VPNBarBuddy/main/install.sh)
-
-(Replace YOURUSERNAME with your GitHub username.)
+bash <(curl -s https://raw.githubusercontent.com/WilCF/VPNBarBuddy/main/install.sh)
+'''
 
     Follow the prompts.
 
