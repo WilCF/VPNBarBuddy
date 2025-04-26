@@ -1,12 +1,13 @@
 #!/bin/bash
 # ---------------------------
-# VPNBarBuddy - Your macOS Menu Bar VPN Companion
-# Author: (YourNameHere)
+# VPNBarBuddy - The One-Click VPN Status Tool for macOS
+# Author: WilCF
 # Description:
 #   - Supports multiple WireGuard profiles
 #   - Auto-detects tools
 #   - Pops macOS notifications
-#   - Shows connection status in menu bar
+#   - Shows connection status in Mac menu bar
+#   - No manual setup needed for plugin folder
 # ---------------------------
 
 function progress_bar() {
@@ -23,11 +24,12 @@ echo "🌟 VPNBarBuddy Setup Starting..."
 sleep 1
 
 # --- Step 1: Auto-Detect Dependencies ---
+
 echo ""
 progress_bar "🔎 Checking for wg-quick (WireGuard tool)..."
 if ! command -v wg-quick &> /dev/null; then
     echo "❌ Error: wg-quick could not be found."
-    echo "➡️  Please install WireGuard tools first (brew install wireguard-tools)."
+    echo "➡️  Please install WireGuard tools first: brew install wireguard-tools"
     exit 1
 fi
 
@@ -37,26 +39,21 @@ if ! command -v osascript &> /dev/null; then
     exit 1
 fi
 
-# --- Step 2: Prompt for Configuration ---
+# --- Step 2: Setup Script and Plugin Folders ---
+
+VPN_DIR="$HOME/vpnbarbuddy-scripts"
+PLUGIN_DIR="$HOME/Library/Application Support/xbar/plugins"
 
 echo ""
-echo "📍 Setup Configuration:"
-read -p "Enter the folder for your VPN scripts (default: ~/vpnbarbuddy-scripts): " VPN_DIR
-VPN_DIR=${VPN_DIR:-~/vpnbarbuddy-scripts}
-
-read -p "Enter the folder for xbar plugins (default: ~/vpnbarbuddy-plugins): " PLUGIN_DIR
-PLUGIN_DIR=${PLUGIN_DIR:-~/vpnbarbuddy-plugins}
-
-read -p "Enter the folder where your WireGuard configs live (default: /etc/wireguard): " WG_CONFIG_DIR
-WG_CONFIG_DIR=${WG_CONFIG_DIR:-/etc/wireguard}
-
-progress_bar "📁 Creating folders..."
+progress_bar "📁 Creating VPN script folder..."
 mkdir -p "$VPN_DIR"
+
+progress_bar "📁 Ensuring xbar plugin folder exists..."
 mkdir -p "$PLUGIN_DIR"
 
 # --- Step 3: Create VPN Scripts ---
 
-progress_bar "🛠️ Creating VPN connection scripts..."
+progress_bar "🛠️ Creating VPN connect and disconnect scripts..."
 
 cat << EOF > "$VPN_DIR/vpnconnect.sh"
 #!/bin/bash
@@ -93,15 +90,15 @@ chmod +x "$VPN_DIR/vpnconnect.sh" "$VPN_DIR/vpndisconnect.sh"
 
 # --- Step 4: Create xbar Plugin ---
 
-progress_bar "🖼️ Creating xbar menu plugin..."
+progress_bar "🖼️ Creating VPNBarBuddy xbar plugin..."
 
 PLUGIN_PATH="$PLUGIN_DIR/vpnstatus.5s.sh"
 
 cat << EOF > "$PLUGIN_PATH"
 #!/bin/bash
 
-WG_CONFIG_DIR="$WG_CONFIG_DIR"
-VPN_DIR="$VPN_DIR"
+WG_CONFIG_DIR="/etc/wireguard"
+VPN_DIR="$HOME/vpnbarbuddy-scripts"
 
 if [ -f /tmp/vpnconnected ]; then
   CURRENT_VPN=\$(cat /tmp/vpnconnected)
@@ -123,11 +120,11 @@ EOF
 
 chmod +x "$PLUGIN_PATH"
 
-# --- Step 5: Offer xbar Installation ---
+# --- Step 5: Offer to Install xbar if Needed ---
 
 if [ ! -d "/Applications/xbar.app" ]; then
   echo ""
-  read -p "xbar not found. Would you like to download and install xbar now? (y/n): " INSTALL_XBAR
+  read -p "❓ xbar not found. Would you like to download and install xbar now? (y/n): " INSTALL_XBAR
   INSTALL_XBAR=${INSTALL_XBAR:-y}
 
   if [ "$INSTALL_XBAR" == "y" ]; then
@@ -137,7 +134,6 @@ if [ ! -d "/Applications/xbar.app" ]; then
     mv ~/Downloads/xbar-temp/xbar.app /Applications/
     rm -rf ~/Downloads/xbar.zip ~/Downloads/xbar-temp
     echo "✅ xbar installed to /Applications."
-    echo "⚡ Please open xbar manually and set the plugin folder to: $PLUGIN_DIR"
   else
     echo "⚠️ Skipping xbar installation. You can install it later from https://xbarapp.com/"
   fi
@@ -149,8 +145,10 @@ fi
 
 echo ""
 echo "🎉 VPNBarBuddy Setup Complete!"
-echo "🛡️  Use your Mac menu bar to connect/disconnect Mullvad VPN servers."
-echo "🟢 Green = Connected  |  🔴 Red = Disconnected"
-echo "🔔 macOS Notifications enabled for connection status."
+echo "🛡️  VPN connect/disconnect scripts installed in: $VPN_DIR"
+echo "🖼️  xbar plugin installed in: $PLUGIN_DIR"
 echo ""
-echo "REMINDER: Set xbar plugin folder to $PLUGIN_DIR inside xbar settings."
+echo "✅ If xbar was already running, your VPNBarBuddy menu should now appear automatically."
+echo "🔔 You'll get macOS notifications when you connect/disconnect."
+echo ""
+echo "No manual folder picking needed. Enjoy! 🎉"
